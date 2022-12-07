@@ -1,14 +1,10 @@
 package com.gustavolr;
 
-import com.gustavolr.os.OsUtils;
+import com.gustavolr.engine.GameEngine;
 
-/**
- * Hello world!
- *
- */
-public class Main 
+public final class Main 
 {
     public static void main( String[] args ) {
-        System.out.println(OsUtils.getResource(OsUtils.join("fonts","Roboto-Regular.ttf")));
+        new GameEngine();
     }
 }
