@@ -1,8 +1,8 @@
 package com.gustavolr.engine;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
 
 import com.gustavolr.engine.game_loop.GameLoop;
 import com.gustavolr.engine.game_loop.GameLoopListener;
@@ -13,7 +13,9 @@ public final class GameEngine implements GameLoopListener{
     
     private final GameWindow window;
     private final GameInput input;
-    private final GameLoop gameLoop;
+
+    int x = 0;
+    int y = 0;
 
     public GameEngine() {
 
@@ -21,33 +23,45 @@ public final class GameEngine implements GameLoopListener{
 
         this.window = new GameWindow("Pong");
         this.window.addKeyListener(input);
-        this.gameLoop = new GameLoop(this);
+        new GameLoop(this);
     }   
 
     @Override
     public void update() {
 
         if (GameInput.isKeyPressed(KeyEvent.VK_LEFT)) {
-            System.out.println("Ola");
+            x--;
         }
+        else if (GameInput.isKeyPressed(KeyEvent.VK_RIGHT)) {
+            x++;
+        }
+
+        if (GameInput.isKeyPressed(KeyEvent.VK_UP)) {
+            y--;
+        } else if (GameInput.isKeyPressed(KeyEvent.VK_DOWN)) {
+            y++;
+        }
+
+
+        System.out.println(x);
     }
 
     @Override
     public void render() {
 
-        BufferStrategy bs = this.window.getBufferStrategy();
-        if ( bs == null ) {
-            this.window.createBufferStrategy(3);
+        Graphics g = this.window.getWindowLayer();
+        if ( g == null ) 
             return;
-        }
-
-        Graphics layer = this.window.getGraphics();
-
-        layer.dispose();
-        layer = bs.getDrawGraphics();
-
-        layer.fillRect(50, 50, 100, 100);
         
-        bs.show();
+        this.window.drawBackground(g);
+        
+        // Game Rendering goes here
+
+        g.setColor(Color.GREEN);
+        g.fillRect(x, y, 50, 50);
+
+        // Game Rendering stops here
+
+        this.window.drawFinalScene(g);
     }
 }
