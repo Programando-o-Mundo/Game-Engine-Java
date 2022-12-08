@@ -21,6 +21,22 @@ public final class GameWindow extends Canvas{
 
     public static BufferedImage bufferLayer;
 
+    public GameWindow(String frameName) {
+        this(GameWindowConstants.DEFAULT_WINDOW_WIDTH, 
+             GameWindowConstants.DEFAULT_WINDOW_HEIGHT, 
+             GameWindowConstants.DEFAULT_WINDOW_SCALE, 
+             frameName);
+    }
+
+    public GameWindow(int width, int height, int scale, String frameName) {
+        GameWindow.width = (short)width;
+        System.out.println(height);
+        GameWindow.height = (short)height;
+        GameWindow.scale = (byte)scale;
+
+        this.initWindowFrame(frameName);
+    }
+
     public static short getWindowWidth() {
         return width;
     }
@@ -45,22 +61,6 @@ public final class GameWindow extends Canvas{
         return bufferLayer;
     }
 
-    public GameWindow(String frameName) {
-        this(GameWindowConstants.DEFAULT_WINDOW_WIDTH, 
-             GameWindowConstants.DEFAULT_WINDOW_HEIGHT, 
-             GameWindowConstants.DEFAULT_WINDOW_SCALE, 
-             frameName);
-    }
-
-    public GameWindow(int width, int height, int scale, String frameName) {
-        GameWindow.width = (short)width;
-        System.out.println(height);
-        GameWindow.height = (short)height;
-        GameWindow.scale = (byte)scale;
-
-        this.initWindowFrame(frameName);
-    }
-
     public void initWindowFrame(String frameName) {
 
         windowFrame = new JFrame(frameName);
@@ -75,14 +75,16 @@ public final class GameWindow extends Canvas{
 
         // Centralize the window to the center of the user screen
         windowFrame.setLocationRelativeTo(null); 
-        
-        windowFrame.setVisible(true);
 
         bufferLayer = new BufferedImage((int)width,(int)height, BufferedImage.TYPE_INT_RGB);
 
         // Set the icon for the frame
 		//Image icon = ImageIO.read(getClass().getResource("/icon.png"));
 		//windowFrame.setIconImage(icon);
+    }
+
+    public void toggleFrameVisibility(boolean visibility) {
+        windowFrame.setVisible(visibility);
     }
 
     public Graphics getWindowLayer() {
