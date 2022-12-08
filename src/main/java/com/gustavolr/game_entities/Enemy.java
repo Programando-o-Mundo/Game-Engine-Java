@@ -5,9 +5,9 @@ import java.awt.Color;
 
 import com.gustavolr.engine.entity.Entity;
 import com.gustavolr.engine.entity.Vector;
-import com.gustavolr.listeners.BallListener;
+import com.gustavolr.listeners.BallMovedListener;
 
-public class Enemy extends Entity implements BallListener {
+public class Enemy extends Entity implements BallMovedListener {
 
     private int speed = 1;
     private Color color = Color.RED;
@@ -15,7 +15,7 @@ public class Enemy extends Entity implements BallListener {
     public Enemy(Vector position, int width, int height) {
         super(position, width, height);
     }
-    
+
     @Override
     public void render(Graphics g) {
         g.setColor(this.color);

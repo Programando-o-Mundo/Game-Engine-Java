@@ -5,13 +5,14 @@ import java.awt.Color;
 
 import com.gustavolr.engine.entity.Entity;
 import com.gustavolr.engine.entity.Vector;
-import com.gustavolr.listeners.BallListener;
+import com.gustavolr.engine.window.GameWindow;
+import com.gustavolr.listeners.BallMovedListener;
 
 public class Ball extends Entity {
 
     private int speed;
     private Color color;
-    private BallListener listener;
+    private BallMovedListener listener;
 
     float dx = 1;
     float dy = 1;
@@ -21,8 +22,12 @@ public class Ball extends Entity {
         speed = 1;
     }
 
-    public void addListener(BallListener b) {
+    public void addListener(BallMovedListener b) {
         this.listener = b;
+    }
+
+    public void ballCollidedWithPaddle() {
+        dx *= -1;
     }
 
     @Override
@@ -30,6 +35,9 @@ public class Ball extends Entity {
 
         position.x += dx * speed;
         position.y += dy * speed;
+
+        if(position.y < 0 || position.y > GameWindow.getWindowHeight())
+            dy *= -1;
 
         if (listener != null) {
             this.listener.ballMoved(position);

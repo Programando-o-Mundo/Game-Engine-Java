@@ -1,6 +1,7 @@
 package com.gustavolr.engine.entity;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public abstract class Entity {
     
@@ -40,4 +41,12 @@ public abstract class Entity {
     public void render(Graphics g) {
 
     }
+
+	public boolean isColidding(Entity e1) {
+		
+		Rectangle e1Mask = new Rectangle(e1.position.x, e1.position.y, e1.width, e1.height);
+		Rectangle e2Mask = new Rectangle(this.position.x, this.position.y, this.width, this.height);
+		
+		return e1Mask.intersects(e2Mask);
+	}
 }

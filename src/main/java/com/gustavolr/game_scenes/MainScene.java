@@ -35,6 +35,12 @@ public class MainScene implements Scene {
         for( Entity e : entities) {
             e.update();
         }
+
+        if (b.isColidding(e)) {
+            b.ballCollidedWithPaddle();
+        } else if(b.isColidding(p)) {
+            b.ballCollidedWithPaddle();
+        }
     }   
 
     @Override
