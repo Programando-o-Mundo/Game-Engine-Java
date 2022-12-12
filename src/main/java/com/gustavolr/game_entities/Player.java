@@ -11,7 +11,7 @@ import com.gustavolr.engine.entity.Vector;
 public class Player extends Entity {
 
     private int speed = 1;
-    private Color color = Color.WHITE;
+    private Color color = new Color(65,105,225);
 
     public Player(Vector position, int width, int height) {
         super(position, width, height);

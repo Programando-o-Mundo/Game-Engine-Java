@@ -24,4 +24,13 @@ public class Vector {
         return tmp;
     }
 
+    public Vector clone() {
+        return new Vector(x,y);
+    }
+
+    @Override
+    public String toString() {
+        return "Vector(x:" + x + ", y:" + y + ");";
+    }
+
 }

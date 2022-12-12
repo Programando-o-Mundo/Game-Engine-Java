@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -30,7 +29,6 @@ public final class GameWindow extends Canvas{
 
     public GameWindow(int width, int height, int scale, String frameName) {
         GameWindow.width = (short)width;
-        System.out.println(height);
         GameWindow.height = (short)height;
         GameWindow.scale = (byte)scale;
 
@@ -99,7 +97,7 @@ public final class GameWindow extends Canvas{
 
     public void drawBackground(Graphics g) {
         
-        g.setColor(Color.BLACK);
+        g.setColor(GameWindowConstants.BACKGROUND_COLOR);
         g.fillRect(0, 0, GameWindow.getWindowWidth(), GameWindow.getWindowHeight());
     }
 
