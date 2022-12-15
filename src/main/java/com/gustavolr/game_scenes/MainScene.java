@@ -12,6 +12,10 @@ import com.gustavolr.engine.ui.Text.Text;
 import com.gustavolr.engine.window.GameWindow;
 import com.gustavolr.game_entities.*;
 
+import static com.gustavolr.game_scenes.MainSceneConstants.ENEMY_START_POSITION;
+import static com.gustavolr.game_scenes.MainSceneConstants.PLAYER_START_POSITION;
+import static com.gustavolr.game_scenes.MainSceneConstants.BALL_START_POSITION;
+
 public final class MainScene implements Scene {
 
     private Player p;
@@ -27,9 +31,9 @@ public final class MainScene implements Scene {
     private final List<Entity> entities;
     
     public MainScene() {
-        p = new Player(MainSceneConstants.PLAYER_START_POSITION.clone(), 10, 50);
-        e = new Enemy(MainSceneConstants.ENEMY_START_POSITION.clone(), 10, 50);
-        b = new Ball(MainSceneConstants.BALL_START_POSITION.clone(),7,7);
+        p = new Player(PLAYER_START_POSITION.clone(), 5, 25);
+        e = new Enemy(ENEMY_START_POSITION.clone(), 5, 25);
+        b = new Ball(BALL_START_POSITION.clone(),7,7);
 
         this.enemyScore = 0;
         int enemyScorePositionX = (int)(GameWindow.getWindowWidth() - (GameWindow.getWindowWidth()*0.15));
@@ -94,7 +98,8 @@ public final class MainScene implements Scene {
     } 
 
     public void updateBallPosition() {
-        b.setPosition(MainSceneConstants.BALL_START_POSITION.clone());
+        b.setPosition(BALL_START_POSITION.clone());
+        b.setSpeed(1);
         b.invertDX();
     }
 

@@ -24,13 +24,25 @@ public class Ball extends Entity {
         dx *= -1;
     }
 
+    public void increaseSpeed() {
+        this.speed += 1;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     @Override
     public void update() {
 
         position.x += dx * speed;
         position.y += dy * speed;
 
-        if(position.y < 0 || position.y > GameWindow.getWindowHeight())
+        if(position.y < 0 || position.y > GameWindow.getWindowHeight() - this.height)
             dy *= -1;
     }
 

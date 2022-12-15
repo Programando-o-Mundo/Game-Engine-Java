@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 
 import com.gustavolr.engine.input.GameInput;
+import com.gustavolr.engine.window.GameWindow;
 import com.gustavolr.engine.entity.Entity;
 import com.gustavolr.engine.entity.Vector;
 
@@ -22,10 +23,10 @@ public class Player extends Entity {
 
         Vector direction = new Vector();
 
-        if (GameInput.isKeyPressed(KeyEvent.VK_UP)) {
+        if (GameInput.isKeyPressed(KeyEvent.VK_UP) && position.y > 0) {
             direction.y -= speed;
         } 
-        else if (GameInput.isKeyPressed(KeyEvent.VK_DOWN)) {
+        else if (GameInput.isKeyPressed(KeyEvent.VK_DOWN) && position.y < GameWindow.getWindowHeight() - this.height) {
             direction.y += speed;
         }
 
