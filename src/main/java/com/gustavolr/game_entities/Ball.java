@@ -9,41 +9,39 @@ import com.gustavolr.engine.window.GameWindow;
 
 public class Ball extends Entity {
 
-    private int speed;
     private Color color = Color.WHITE;
 
-    float dx = 1;
-    float dy = 1;
+    public double dx,dy,speed;
 
     public Ball(Vector position, int width, int height) {
         super(position, width, height);
-        speed = 1;
-    }
-
-    public void invertDX() {
-        dx *= -1;
-    }
-
-    public void increaseSpeed() {
-        this.speed += 1;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
+        speed = 3;
+        dx = 1;
+        dy = 1;
     }
 
     @Override
     public void update() {
 
-        position.x += dx * speed;
-        position.y += dy * speed;
-
         if(position.y < 0 || position.y > GameWindow.getWindowHeight() - this.height)
             dy *= -1;
+
+        position.x += dx;
+        position.y += dy;
+        super.update();
+    }
+
+    public void calculateAngleAfterColisionWith(Entity paddle) {
+        double relativeInsersectY = (paddle.getPosition().y + (paddle.getHeight()/2.0)) - (this.getPosition().y + (this.getHeight() / 2.0));
+        double normalIntersectY = relativeInsersectY / (paddle.getHeight() / 2.0);
+        double theta = Math.toRadians(normalIntersectY * 45);
+
+        double newDx = Math.abs(Math.cos(theta)) * this.speed;
+        double newDy = (-Math.sin(theta)) * this.speed;
+
+        double oldSign = Math.signum(this.dx);
+        this.dx = newDx * (-1.0 * oldSign);
+        this.dy = newDy;
     }
 
     @Override

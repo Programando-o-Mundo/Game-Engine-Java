@@ -31,8 +31,8 @@ public final class MainScene implements Scene {
     private final List<Entity> entities;
     
     public MainScene() {
-        p = new Player(PLAYER_START_POSITION.clone(), 5, 25);
-        e = new Enemy(ENEMY_START_POSITION.clone(), 5, 25);
+        p = new Player(PLAYER_START_POSITION.clone(), 4, 35);
+        e = new Enemy(ENEMY_START_POSITION.clone(), 4, 35);
         b = new Ball(BALL_START_POSITION.clone(),7,7);
 
         this.enemyScore = 0;
@@ -59,6 +59,9 @@ public final class MainScene implements Scene {
             e.update();
         }
 
+        System.out.println("b.dx = " + b.dx);
+        System.out.println("b.dy = " + b.dy);
+
         e.ballMoved(b.getPosition());
 
         checkIfBallCollidedWithPaddles();
@@ -67,17 +70,26 @@ public final class MainScene implements Scene {
     }   
 
     public void checkIfBallCollidedWithPaddles() {
-        if (b.isColidding(e)) {
-            b.invertDX();
-        } else if(b.isColidding(p)) {
-            b.invertDX();
+        if (b.isColidding(e) || b.isColidding(p)) {
+
+            System.out.println("colisao com paddle");
+            Entity collidedEntity;
+
+            if(b.isColidding(e)) {
+                collidedEntity = e;
+            } else {
+                collidedEntity = p;
+            }
+
+            b.calculateAngleAfterColisionWith(collidedEntity);
         }
     }
 
     public void checkForScoring() {
         Vector ballPosition = b.getPosition();
+        int width = b.getWidth();
 
-        if (enemyScored(ballPosition.x)) {
+        if (enemyScored(ballPosition.x, width)) {
             enemyScore += 1;
             enemyScoreText.setLabel(Integer.toString(enemyScore));
             updateBallPosition();
@@ -93,14 +105,14 @@ public final class MainScene implements Scene {
         return ball_x > GameWindow.getWindowWidth();
     }
 
-    public boolean enemyScored(int ball_x) {
-        return ball_x < 0;
+    public boolean enemyScored(int ball_x, int ball_width) {
+        return ball_x < -ball_width;
     } 
 
     public void updateBallPosition() {
         b.setPosition(BALL_START_POSITION.clone());
-        b.setSpeed(1);
-        b.invertDX();
+        b.dx = 1;
+        b.dy = 1;
     }
 
     @Override

@@ -31,6 +31,7 @@ public class Player extends Entity {
         }
 
         this.position = this.position.add(direction);
+        super.update();
     }
 
     @Override
