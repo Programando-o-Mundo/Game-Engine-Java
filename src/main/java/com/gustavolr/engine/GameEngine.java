@@ -3,6 +3,7 @@ package com.gustavolr.engine;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.gustavolr.engine.game_loop.GameLoop;
 import com.gustavolr.engine.game_loop.GameLoopListener;
@@ -16,6 +17,8 @@ public final class GameEngine implements GameLoopListener{
     private final GameInput input;
 
     private final List<Scene> scene_manager;
+
+    public static Random rng = new Random();
 
     public GameEngine() {
 

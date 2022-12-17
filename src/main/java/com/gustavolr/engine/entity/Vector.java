@@ -2,15 +2,15 @@ package com.gustavolr.engine.entity;
 
 public class Vector {
     
-    public int x;
-    public int y;
+    public float x;
+    public float y;
 
     public Vector() {
         this.x = 0;
         this.y = 0;
     }
 
-    public Vector(int x, int y) {
+    public Vector(float x, float y) {
         this.x = x;
         this.y = y;
     }

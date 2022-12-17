@@ -56,7 +56,7 @@ public class Text extends Entity {
 		g.setFont(labelFont);
 		metrics = g.getFontMetrics(labelFont);
 
-		g.drawString(this.label, this.position.x, this.position.y );
+		g.drawString(this.label, (int)this.position.x, (int)this.position.y );
 	}
 
 }

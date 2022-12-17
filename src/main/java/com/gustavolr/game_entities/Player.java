@@ -11,7 +11,7 @@ import com.gustavolr.engine.entity.Vector;
 
 public class Player extends Entity {
 
-    private int speed = 1;
+    private double speed = 1.5;
     private Color color = new Color(65,105,225);
 
     public Player(Vector position, int width, int height) {
@@ -31,13 +31,12 @@ public class Player extends Entity {
         }
 
         this.position = this.position.add(direction);
-        super.update();
     }
 
     @Override
     public void render(Graphics g) {
         g.setColor(this.color);
-        g.fillRect(this.position.x, this.position.y, this.width, this.height);
+        g.fillRect((int)this.position.x, (int)this.position.y, this.width, this.height);
     }
     
 }

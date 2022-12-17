@@ -9,18 +9,11 @@ import com.gustavolr.engine.window.GameWindow;
 
 public class Enemy extends Entity {
 
-    private int speed = 1;
+    private double speed = 1;
     private Color color = new Color(196,30,58);
 
     public Enemy(Vector position, int width, int height) {
         super(position, width, height);
-    }
-
-    @Override
-    public void render(Graphics g) {
-        g.setColor(this.color);
-        g.fillRect(this.position.x, this.position.y, this.width, this.height);
-        super.update();
     }
 
     public void ballMoved(Vector ballPosition) {
@@ -36,6 +29,12 @@ public class Enemy extends Entity {
 
         position = position.add(direction);
         
+    }
+
+    @Override
+    public void render(Graphics g) {
+        g.setColor(this.color);
+        g.fillRect((int)this.position.x, (int)this.position.y, this.width, this.height);
     }
     
 }

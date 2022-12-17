@@ -8,9 +8,11 @@ import java.util.List;
 import com.gustavolr.engine.entity.Entity;
 import com.gustavolr.engine.entity.Vector;
 import com.gustavolr.engine.scene.Scene;
+import com.gustavolr.engine.sound.SoundPlayer;
 import com.gustavolr.engine.ui.Text.Text;
 import com.gustavolr.engine.window.GameWindow;
 import com.gustavolr.game_entities.*;
+import com.gustavolr.utils.OsUtils;
 
 import static com.gustavolr.game_scenes.MainSceneConstants.ENEMY_START_POSITION;
 import static com.gustavolr.game_scenes.MainSceneConstants.PLAYER_START_POSITION;
@@ -24,16 +26,27 @@ public final class MainScene implements Scene {
 
     private Text enemyScoreText;
     private Text playerScoreText;
+    
+    private Text whoWon;
 
     private int enemyScore;
     private int playerScore;
 
     private final List<Entity> entities;
+
+    private final static SoundPlayer scoreSFX = new SoundPlayer(OsUtils.getResource(OsUtils.join("sfx","score.wav")).getFile());
+
+    private final static int MAX_SCORE = 1;
     
     public MainScene() {
-        p = new Player(PLAYER_START_POSITION.clone(), 4, 35);
-        e = new Enemy(ENEMY_START_POSITION.clone(), 4, 35);
-        b = new Ball(BALL_START_POSITION.clone(),7,7);
+
+        this.initScores();
+
+        entities = new ArrayList<>();
+        this.initEntities();
+    }
+
+    public void initScores() {
 
         this.enemyScore = 0;
         int enemyScorePositionX = (int)(GameWindow.getWindowWidth() - (GameWindow.getWindowWidth()*0.15));
@@ -44,8 +57,14 @@ public final class MainScene implements Scene {
         int playerScorePositionX = (int)(GameWindow.getWindowWidth() - (GameWindow.getWindowWidth()*0.87));
         int playerScorePositionY = (int)(GameWindow.getWindowWidth()*0.1);
         playerScoreText = new Text(new Vector(playerScorePositionX,playerScorePositionY), "0");
+    }
 
-        entities = new ArrayList<>();
+    public void initEntities() {
+
+        p = new Player(PLAYER_START_POSITION.clone(), 4, 35);
+        e = new Enemy(ENEMY_START_POSITION.clone(), 4, 35);
+        b = new Ball(BALL_START_POSITION.clone(),7,7);
+
         entities.add(p);
         entities.add(e);
         entities.add(b);
@@ -59,45 +78,81 @@ public final class MainScene implements Scene {
             e.update();
         }
 
-        System.out.println("b.dx = " + b.dx);
-        System.out.println("b.dy = " + b.dy);
-
         e.ballMoved(b.getPosition());
 
         checkIfBallCollidedWithPaddles();
 
         checkForScoring();
+
+        endGame();
     }   
 
-    public void checkIfBallCollidedWithPaddles() {
-        if (b.isColidding(e) || b.isColidding(p)) {
+    public void endGame() {
 
-            System.out.println("colisao com paddle");
-            Entity collidedEntity;
+        boolean gameEnded = false;
+        Vector winnerPositionScore = null;
+        String text = null;
 
-            if(b.isColidding(e)) {
-                collidedEntity = e;
-            } else {
-                collidedEntity = p;
+        if (enemyScore == MAX_SCORE || playerScore == MAX_SCORE) {
+
+            gameEnded = true;
+
+            if (enemyScore == MAX_SCORE) {
+                winnerPositionScore = enemyScoreText.getPosition().clone();
+                winnerPositionScore.x -= 50;
+                text = "You Lose";
+                whoWon = new Text(winnerPositionScore, text);
+                whoWon.setTextColor(Color.RED);
+                
+
+            } else { 
+                winnerPositionScore = playerScoreText.getPosition().clone();
+                winnerPositionScore.x -= 15;
+                text = "You Win";
+                whoWon = new Text(winnerPositionScore, text);
+                whoWon.setTextColor(Color.GREEN);
             }
-
-            b.calculateAngleAfterColisionWith(collidedEntity);
         }
+    
+        if (gameEnded) {
+
+            
+            entities.clear();
+            
+            entities.add(whoWon);
+        }
+    }
+
+    public void checkIfBallCollidedWithPaddles() {
+
+        Entity collidedEntity = null;
+
+        if(b.isColidding(e)) {
+            collidedEntity = e;
+        } else if (b.isColidding(p)) {
+            collidedEntity = p;
+        }
+
+        if (collidedEntity != null)
+            b.calculateAngleAfterColisionWith(collidedEntity);
+        
     }
 
     public void checkForScoring() {
         Vector ballPosition = b.getPosition();
         int width = b.getWidth();
 
-        if (enemyScored(ballPosition.x, width)) {
+        if (enemyScored((int)ballPosition.x, width)) {
             enemyScore += 1;
             enemyScoreText.setLabel(Integer.toString(enemyScore));
-            updateBallPosition();
+            updateBallPosition(e);
+            scoreSFX.play();
 
-        } else if(playerScored(ballPosition.x)) {
+        } else if(playerScored((int)ballPosition.x)) {
             playerScore += 1;
             playerScoreText.setLabel(Integer.toString(playerScore));
-            updateBallPosition();
+            updateBallPosition(p);
+            scoreSFX.play();
         }
     }
 
@@ -109,10 +164,13 @@ public final class MainScene implements Scene {
         return ball_x < -ball_width;
     } 
 
-    public void updateBallPosition() {
+    public void updateBallPosition(Entity whoScored) {
+
+        b.speed = 2;
+
         b.setPosition(BALL_START_POSITION.clone());
-        b.dx = 1;
-        b.dy = 1;
+        b.dx = (whoScored instanceof Player ? 1 : -1) * b.speed;
+        b.dy = 0;
     }
 
     @Override
