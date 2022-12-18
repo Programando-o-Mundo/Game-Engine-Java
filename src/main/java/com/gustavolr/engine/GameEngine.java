@@ -15,6 +15,7 @@ public final class GameEngine implements GameLoopListener{
     
     private final GameWindow window;
     private final GameInput input;
+    private GameLoop gameLoop;
 
     private final List<Scene> scene_manager;
 
@@ -37,15 +38,15 @@ public final class GameEngine implements GameLoopListener{
     public void start() {
         this.window.toggleFrameVisibility(true);
         this.window.requestFocus();
-        new GameLoop(this);
+        gameLoop = new GameLoop(this);
     }
 
     @Override
     public void update() {
 
-        for(Scene scene : scene_manager) {
+        for(Scene scene : scene_manager) 
             scene.update();
-        }
+        
     }
 
     @Override
@@ -54,6 +55,7 @@ public final class GameEngine implements GameLoopListener{
         Graphics g = this.window.getWindowLayer();
         if ( g == null ) 
             return;
+        
         
         this.window.drawBackground(g);
         

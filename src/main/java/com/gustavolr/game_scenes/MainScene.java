@@ -34,7 +34,7 @@ public final class MainScene implements Scene {
 
     private final List<Entity> entities;
 
-    private final static SoundPlayer scoreSFX = new SoundPlayer(OsUtils.getResource(OsUtils.join("sfx","score.wav")).getFile());
+    private final static SoundPlayer scoreSFX = new SoundPlayer(OsUtils.getResourceAsInputStream(OsUtils.join("sfx","score.wav")));
 
     private final static int MAX_SCORE = 1;
     

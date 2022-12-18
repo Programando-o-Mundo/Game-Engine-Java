@@ -1,24 +1,22 @@
 package com.gustavolr.engine.window;
 
-import java.awt.Canvas;
-import java.awt.Graphics;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferStrategy;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.Graphics;
 
-import javax.swing.JFrame;
-
-public final class GameWindow extends Canvas{
-    
-    private static final long serialVersionUID = 1L;
-
-    private static JFrame windowFrame;
+public final class GameWindow extends Frame implements WindowListener{
 
     private static short width;
     private static short height;
     private static byte scale;
 
     public static BufferedImage bufferLayer;
+
+    public boolean playerPressXtoQuit;
 
     public GameWindow(String frameName) {
         this(GameWindowConstants.DEFAULT_WINDOW_WIDTH, 
@@ -28,9 +26,12 @@ public final class GameWindow extends Canvas{
     }
 
     public GameWindow(int width, int height, int scale, String frameName) {
+        super(frameName);
         GameWindow.width = (short)width;
         GameWindow.height = (short)height;
         GameWindow.scale = (byte)scale;
+
+        playerPressXtoQuit = false;
 
         this.initWindowFrame(frameName);
     }
@@ -61,18 +62,15 @@ public final class GameWindow extends Canvas{
 
     public void initWindowFrame(String frameName) {
 
-        windowFrame = new JFrame(frameName);
+        setResizable(false);
 
-        windowFrame.setResizable(false);
+        setPreferredSize(new Dimension(width*scale,height*scale));
 
-        windowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        this.setPreferredSize(new Dimension(width*scale,height*scale));
-        windowFrame.add(this);
-        windowFrame.pack(); // The pack method sizes the frame so that all its contents are at or above their preferred sizes
-
+        pack(); // The pack method sizes the frame so that all its contents are at or above their preferred sizes
+        addWindowListener(this);
         // Centralize the window to the center of the user screen
-        windowFrame.setLocationRelativeTo(null); 
+        setLocationRelativeTo(null); 
+        setLayout(null);
 
         bufferLayer = new BufferedImage((int)width,(int)height, BufferedImage.TYPE_INT_RGB);
 
@@ -82,7 +80,7 @@ public final class GameWindow extends Canvas{
     }
 
     public void toggleFrameVisibility(boolean visibility) {
-        windowFrame.setVisible(visibility);
+        this.setVisible(visibility);
     }
 
     public Graphics getWindowLayer() {
@@ -106,11 +104,58 @@ public final class GameWindow extends Canvas{
         BufferStrategy bs = this.getBufferStrategy();
 
         g.dispose();
-        g = bs.getDrawGraphics();
 
-        g.drawImage(bufferLayer, 0, 0, width * scale, height * scale, null);
+        try {
+            g = bs.getDrawGraphics();
+
+            g.drawImage(bufferLayer, 5, 29, width * scale, height * scale, null);
         
-        bs.show();
+            bs.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+
+    @Override
+    public void windowActivated(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowClosed(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowClosing(WindowEvent arg0) {
+        setVisible(false);
+        dispose();
+        System.exit(0);
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowIconified(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowOpened(WindowEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 }
