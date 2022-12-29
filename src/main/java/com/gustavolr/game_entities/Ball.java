@@ -16,8 +16,8 @@ public class Ball extends Entity {
 
     public double dx,dy,speed;
 
-    private final static SoundPlayer wallSFX = new SoundPlayer(OsUtils.getResource(OsUtils.join("sfx","wall.wav")).getFile());
-    private final static SoundPlayer paddleSFX = new SoundPlayer(OsUtils.getResource(OsUtils.join("sfx","paddle.wav")).getFile());
+    private final static SoundPlayer wallSFX = new SoundPlayer(OsUtils.getResourceAsInputStream(OsUtils.join("sfx","wall.wav")));
+    private final static SoundPlayer paddleSFX = new SoundPlayer(OsUtils.getResourceAsInputStream(OsUtils.join("sfx","paddle.wav")));
 
     public Ball(Vector position, int width, int height) {
         super(position, width, height);
