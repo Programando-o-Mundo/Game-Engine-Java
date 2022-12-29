@@ -36,7 +36,7 @@ public final class MainScene implements Scene {
 
     private final static SoundPlayer scoreSFX = new SoundPlayer(OsUtils.getResourceAsInputStream(OsUtils.join("sfx","score.wav")));
 
-    private final static int MAX_SCORE = 1;
+    private final static int MAX_SCORE = 3;
     
     public MainScene() {
 
